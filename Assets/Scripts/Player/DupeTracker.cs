@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements.Experimental;
 
 namespace Player.Dupes
 {
   public class DupeTracker : MonoBehaviour
   {
-    [SerializeField] public string KeyBind = "W";
+    [SerializeField] public KeyCode KeyBind = KeyCode.W;
     [Range(0, 6)] public short MaxDupes;
     public static List<PlayerDupes> Instances = new List<PlayerDupes>();
     public PlayerDupes CurrentInstance = new();
@@ -15,8 +14,7 @@ namespace Player.Dupes
 
     void Start()
     {
-      CurrentInstance = new PlayerDupes();
-      Instances.Add(CurrentInstance);
+      NewCloneTrack();
       PlayerState.Instance.OnStateChanged += UpdateStateLogging;
     }
     void FixedUpdate()
@@ -40,22 +38,22 @@ namespace Player.Dupes
 
     void Update()
     {
-      if (Input.GetKeyDown(KeyBind) && MaxDupes >= Instances.Count)
+      if (Input.GetKeyDown(KeyBind) && Instances.Count < MaxDupes)
       {
-        IfReset();
+        NewCloneTrack();
       }
     }
 
-    public void IfReset()
+    public void NewCloneTrack()
     {
       print("Resetting dupe tracker");
       CurrentInstance = new PlayerDupes();
       Instances.Add(CurrentInstance);
     }
 
-    void UpdateStateLogging(StatesEnum @enum)
+    void UpdateStateLogging(StatesEnum @StatesEnum)
     {
-      currentlyKnownState = @enum;
+      currentlyKnownState = @StatesEnum;
     }
-  }
+  }   
 }

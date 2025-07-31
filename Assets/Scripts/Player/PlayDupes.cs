@@ -2,11 +2,10 @@ using Player.Dupes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements.Experimental;
 
 public class PlayDupes : MonoBehaviour
 {
-  [SerializeField] public string KeyBind = "E";
+  [SerializeField] public KeyCode KeyBind = KeyCode.E;
   [SerializeField] private GameObject playerPrefab;
   List<GameObject> playerDupes = new();
   DupeTracker dupeTracker;
@@ -22,10 +21,11 @@ public class PlayDupes : MonoBehaviour
     {
       foreach (var instance in DupeTracker.Instances)
       {
-        playerDupes.Add(Instantiate(playerPrefab));
+        GameObject newDupe = Instantiate(playerPrefab);
+        playerDupes.Add(Instantiate(newDupe));
         if (instance.CoordsAnimSet.Count > 0)
         {
-          StartCoroutine(PlaySequence(instance.transform, instance.CoordsAnimSet));
+          StartCoroutine(PlaySequence(newDupe.transform, instance.CoordsAnimSet));
         }
       }
     }
@@ -39,5 +39,4 @@ public class PlayDupes : MonoBehaviour
       yield return new WaitForFixedUpdate();
     }
   }
-
 }
