@@ -12,8 +12,6 @@ public class DupeCounter : MonoBehaviour
   private void Start()
   {
     text = GetComponentsInChildren<TMP_Text>().FirstOrDefault(x => x.name == "DupeCountText");
-    if (text == null)
-      print("u twat");
     dupeTracker = FindObjectOfType<DupeTracker>();
     dupeTracker.NewDupeCreated += runUpdate;
     runUpdate();
