@@ -12,7 +12,6 @@ public class PlayerState : MonoBehaviour
   {
     Instance = this;
   }
-
   public void SetState(StatesEnum newState)
   {
     if (currentState != newState)
