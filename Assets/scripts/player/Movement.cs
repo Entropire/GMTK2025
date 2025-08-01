@@ -19,7 +19,7 @@ public class movement : MonoBehaviour
 
   void Update()
   {
-    input = Input.GetAxis("Horizontal");
+    input = (Input.GetKey(KeyCode.A) ? -1 : 0) + (Input.GetKey(KeyCode.D) ? 1 : 0);
 
     if (Input.GetKeyDown("space"))
     {
