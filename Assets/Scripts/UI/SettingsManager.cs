@@ -17,4 +17,6 @@ public class SettingsManager : MonoBehaviour
   {
     settings.KeyBinds[name] = key;
   }
+
+
 }
