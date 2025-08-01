@@ -47,6 +47,7 @@ namespace Player.Dupes
         }
         target.position = endPos; // Ensure final position is set
       }
+      sequence.Add(new DupeData(target.position, StatesEnum.Idle, 0f));
     }
   }
 }

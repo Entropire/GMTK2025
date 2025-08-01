@@ -5,12 +5,10 @@ using UnityEngine;
 
 namespace Player.Dupes
 {
-  public class PlayerDupes 
+  public class PlayerDupes
   {
     public List<DupeData> CoordsAnimSet = new();
   }
-
-
   public class DupeData
   {
     public Vector2 Location { get; set; }
