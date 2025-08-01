@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[DefaultExecutionOrder(-10)]
 public class PlayerState : MonoBehaviour
 {
   StatesEnum currentState = StatesEnum.Idle;
@@ -8,10 +9,11 @@ public class PlayerState : MonoBehaviour
 
   public static PlayerState Instance { get; private set; }
 
-  private void Start()
+  private void Awake()
   {
     Instance = this;
   }
+
   public void SetState(StatesEnum newState)
   {
     if (currentState != newState)
