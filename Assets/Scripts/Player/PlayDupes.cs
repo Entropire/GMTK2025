@@ -1,42 +1,52 @@
-using Player.Dupes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayDupes : MonoBehaviour
+namespace Player.Dupes
 {
-  [SerializeField] public KeyCode KeyBind = KeyCode.E;
-  [SerializeField] private GameObject playerPrefab;
-  List<GameObject> playerDupes = new();
-  DupeTracker dupeTracker;
-
-  void Start()
+  public class PlayDupes : MonoBehaviour
   {
-    dupeTracker = FindObjectOfType<DupeTracker>();
-  }
+    [SerializeField] public KeyCode KeyBind = KeyCode.E;
+    [SerializeField] private GameObject playerPrefab;
+    List<GameObject> playerDupes = new();
+    DupeTracker dupeTracker;
 
-  void Update()
-  {
-    if (Input.GetKeyDown(KeyBind) && dupeTracker != null && dupeTracker.CurrentInstance != null && dupeTracker.CurrentInstance.CoordsAnimSet.Count > 0)
+    void Start()
     {
-      foreach (var instance in DupeTracker.Instances)
+      dupeTracker = FindObjectOfType<DupeTracker>();
+    }
+
+    void Update()
+    {
+      if (Input.GetKeyDown(KeyBind) && dupeTracker != null && dupeTracker.CurrentInstance != null && dupeTracker.CurrentInstance.CoordsAnimSet.Count > 0)
       {
-        GameObject newDupe = Instantiate(playerPrefab);
-        playerDupes.Add(Instantiate(newDupe));
-        if (instance.CoordsAnimSet.Count > 0)
+        foreach (var instance in DupeTracker.Instances)
         {
+          GameObject newDupe = Instantiate(playerPrefab);
+          playerDupes.Add(newDupe);
+
           StartCoroutine(PlaySequence(newDupe.transform, instance.CoordsAnimSet));
         }
       }
     }
-  }
-  public IEnumerator PlaySequence(Transform target, List<DupeData> sequence)
-  {
-    foreach (var dupe in sequence)
+    public IEnumerator PlaySequence(Transform target, List<DupeData> sequence)
     {
-      target.position = Vector3.Lerp(target.position, dupe.Transform.position, dupe.TimePassed);
+      print("Playing sequence for dupe");
+      for (int i = 0; i < sequence.Count; i++)
+      {
+        Vector3 startPos = target.position;
+        Vector3 endPos = new Vector3(sequence[i].Location.x, sequence[i].Location.y, startPos.z);
+        float duration = sequence[i].TimePassed;
+        float elapsed = 0f;
 
-      yield return new WaitForFixedUpdate();
+        while (elapsed < duration)
+        {
+          target.position = Vector3.Lerp(startPos, endPos, elapsed / duration);
+          elapsed += Time.deltaTime;
+          yield return null;
+        }
+        target.position = endPos; // Ensure final position is set
+      }
     }
   }
 }

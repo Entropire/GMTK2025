@@ -13,13 +13,13 @@ namespace Player.Dupes
 
   public class DupeData
   {
-    public Transform Transform { get; set; }
+    public Vector2 Location { get; set; }
     public StatesEnum AnimationState { get; set; }
 
     public float TimePassed { get; set; }
-    public DupeData(Transform transform, StatesEnum animationState, float timePassed)
+    public DupeData(Vector2 location, StatesEnum animationState, float timePassed)
     {
-      Transform = transform;
+      Location = location;
       AnimationState = animationState;
       TimePassed = timePassed;
     }

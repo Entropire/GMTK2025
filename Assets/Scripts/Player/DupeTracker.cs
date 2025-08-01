@@ -9,7 +9,7 @@ namespace Player.Dupes
     [SerializeField] public KeyCode KeyBind = KeyCode.W;
     [Range(0, 6)] public short MaxDupes;
     public static List<PlayerDupes> Instances = new List<PlayerDupes>();
-    public PlayerDupes CurrentInstance = new();
+    public PlayerDupes CurrentInstance;
     StatesEnum currentlyKnownState = StatesEnum.Idle;
 
     void Start()
@@ -19,21 +19,28 @@ namespace Player.Dupes
     }
     void FixedUpdate()
     {
-      try
+      if (Instances.Count != 0 && Instances.Last().CoordsAnimSet.Count != 0)
       {
-        if (transform == CurrentInstance.CoordsAnimSet.Last().Transform)
+        Vector2 lastPosition = new(transform.position.x, transform.position.y);
+        //Debug.Log($"{transform.position} == {CurrentInstance.CoordsAnimSet.Last().Location}");
+        if (Vector2.Distance((Vector2)transform.position, CurrentInstance.CoordsAnimSet.Last().Location) == 0)
         {
+          print("Adding time cuz standing still");
           CurrentInstance.CoordsAnimSet.Last().TimePassed += Time.deltaTime;  //if the transform is the same as the last one, just update the time passed
         }
         else
         {
-          CurrentInstance.CoordsAnimSet.Add(new(transform, currentlyKnownState, Time.deltaTime)); //otherwise, add a new dupe data with the current transform and state
+          print("Adding new position");
+          CurrentInstance.CoordsAnimSet.Add(new(lastPosition, currentlyKnownState, Time.deltaTime)); //otherwise, add a new dupe data with the current transform and state
         }
       }
-      catch
+      else
       {
-        CurrentInstance.CoordsAnimSet.Add(new(transform, currentlyKnownState, Time.deltaTime));
+        print("Adding first position/fallback");
+        Vector2 lastPosition = new(transform.position.x, transform.position.y);
+        CurrentInstance.CoordsAnimSet.Add(new(lastPosition, currentlyKnownState, Time.deltaTime));
       }
+
     }
 
     void Update()
@@ -55,5 +62,5 @@ namespace Player.Dupes
     {
       currentlyKnownState = @StatesEnum;
     }
-  }   
+  }
 }

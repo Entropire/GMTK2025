@@ -525,7 +525,7 @@ Transform:
   m_GameObject: {fileID: 921288447}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -208.02994, y: 279.03888, z: -11.781326}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -575,7 +575,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   KeyBind: 119
-  MaxDupes: 0
+  MaxDupes: 1
 --- !u!4 &1922651068
 Transform:
   m_ObjectHideFlags: 0
