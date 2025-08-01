@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace Player.Dupes
     [SerializeField] public Vector3 StartPosition;
     [SerializeField] public KeyCode KeyBind = KeyCode.W;
     [Range(0, 6)] public short MaxDupes;
+    public event Action NewDupeCreated;
     public static List<PlayerDupes> Instances = new List<PlayerDupes>();
     public PlayerDupes CurrentInstance;
     StatesEnum currentlyKnownState = StatesEnum.Idle;
@@ -58,6 +60,7 @@ namespace Player.Dupes
       print("Resetting dupe tracker");
       CurrentInstance = new PlayerDupes();
       Instances.Add(CurrentInstance);
+      NewDupeCreated?.Invoke();
       transform.position = StartPosition;
       isTracking = true;
     }
