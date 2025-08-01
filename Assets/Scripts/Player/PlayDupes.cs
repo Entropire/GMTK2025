@@ -25,7 +25,7 @@ public class PlayDupes : MonoBehaviour
         playerDupes.Add(Instantiate(playerPrefab));
         if (instance.CoordsAnimSet.Count > 0)
         {
-          //StartCoroutine(PlaySequence(instance.transform, instance.CoordsAnimSet));
+          StartCoroutine(PlaySequence(playerPrefab.transform, instance.CoordsAnimSet));
         }
       }
     }
