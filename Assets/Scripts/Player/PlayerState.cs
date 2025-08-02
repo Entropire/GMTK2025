@@ -23,4 +23,8 @@ public class PlayerState : MonoBehaviour
     }
   }
 
+    public StatesEnum GetState()
+    {
+        return currentState;
+    }
 }
