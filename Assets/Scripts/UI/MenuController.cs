@@ -1,10 +1,13 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour
 {
   [SerializeField] private GameObject PauseMenu;
-
+  [SerializeField] private GameObject startPanel;
+  [SerializeField] private GameObject settingsPanel;
+  public static event Action SettingsRequested;
   public void SetScene(int sceneIndex)
   {
     SceneManager.LoadScene(sceneIndex);
@@ -28,6 +31,18 @@ public class MenuController : MonoBehaviour
     }
   }
 
+  public void GoToSettings()
+  {
+    startPanel.SetActive(false);
+    settingsPanel.SetActive(true);
+  }
+
+  public void GoToMainMenu()
+  {
+    startPanel.SetActive(true);
+    settingsPanel.SetActive(false);
+    SettingsRequested?.Invoke();
+  }
   private void Update()
   {
     if (PauseMenu != null && Input.GetKeyDown(KeyCode.Escape))
