@@ -23,6 +23,7 @@ namespace Player.Dupes
         foreach (var instance in DupeTracker.Instances)
         {
           GameObject newDupe = Instantiate(playerPrefab);
+          
           playerDupes.Add(newDupe);
 
           StartCoroutine(PlaySequence(newDupe.transform, instance.CoordsAnimSet));
