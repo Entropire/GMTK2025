@@ -7,7 +7,7 @@ public class Next_LVL : MonoBehaviour
 {
     [SerializeField] private string nextLevelName = "lvl_0";
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         SceneManager.LoadScene(nextLevelName);
     }
