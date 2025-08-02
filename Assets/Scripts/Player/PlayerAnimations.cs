@@ -34,6 +34,10 @@ public class PlayerAnimations : MonoBehaviour
             case StatesEnum.JumpingRight:
             case StatesEnum.JumpingRunnuingLeft:
             case StatesEnum.JumpingRunnuingRight:
+            case StatesEnum.FallingRight:
+            case StatesEnum.FallingLeft:
+            case StatesEnum.FallingRunningLeft:
+            case StatesEnum.FallingRunnuingRight:
                 animator.SetTrigger("Jump");
                 break;
             default:
