@@ -1,73 +1,40 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements.Experimental;
 
 namespace Player.Dupes
 {
   public class DupeTracker : MonoBehaviour
   {
-    [Header("This script is added to the player itself")]
-    [SerializeField] public Vector3 StartPosition;
-    [SerializeField] public KeyCode KeyBind = KeyCode.W;
-    [Range(0, 6)] public short MaxDupes;
-    public event Action NewDupeCreated;
-    public static List<PlayerDupes> Instances = new List<PlayerDupes>();
-    public PlayerDupes CurrentInstance;
-    StatesEnum currentlyKnownState = StatesEnum.Idle;
-    bool isTracking = false;
-
-    void Start()
+    [Header("This script should be on the dupe prefab")] public GameObject parent;
+    public event Action<List< DupeTrackingData>> OnDupeDataChanged;
+    public void Start()
     {
-      NewCloneTrack();
-      transform.position = StartPosition;
-      PlayerState.Instance.OnStateChanged += UpdateStateLogging;
+      parent = transform.parent.gameObject;
     }
-    void FixedUpdate()
+
+    public void StartTracking()
     {
-      if (!isTracking) return;
-      if (Instances.Count != 0 && Instances.Last().CoordsAnimSet.Count != 0)
-      {
-        Vector2 lastPosition = new(transform.position.x, transform.position.y);
-        if (Vector2.Distance((Vector2)transform.position, CurrentInstance.CoordsAnimSet.Last().Location) == 0)
-        {
-          CurrentInstance.CoordsAnimSet.Last().TimePassed += Time.deltaTime;  //if the transform is the same as the last one, just update the time passed
+      StartCoroutine(trackUpdate());
+    }
+
+    public void StopTracking()
+    {
+      StopCoroutine(trackUpdate());
+
         }
-        else
-        {
-          CurrentInstance.CoordsAnimSet.Add(new(lastPosition, currentlyKnownState, Time.deltaTime)); //otherwise, add a new dupe data with the current transform and state
-        }
-      }
-      else
-      {
-        Vector2 lastPosition = new(transform.position.x, transform.position.y);
-        CurrentInstance.CoordsAnimSet.Add(new(lastPosition, currentlyKnownState, Time.deltaTime));
-      }
+
+    public IEnumerator trackUpdate()
+    {
+
+      yield return new WaitForFixedUpdate();
     }
 
-    void Update()
-    {
-      if (Input.GetKeyDown(KeyBind) && Instances.Count < MaxDupes && isTracking)
-      {
-        isTracking = false;
-        NewCloneTrack();
-      }
-    }
 
-    public void NewCloneTrack()
+    public class DupeTrackingData
     {
-      print("Resetting dupe tracker");
-      CurrentInstance = new PlayerDupes();
-      Instances.Add(CurrentInstance);
-      NewDupeCreated?.Invoke();
-      transform.position = StartPosition;
-      isTracking = true;
-    }
 
-    void UpdateStateLogging(StatesEnum @StatesEnum)
-    {
-      currentlyKnownState = @StatesEnum;
     }
   }
 }
