@@ -32,7 +32,8 @@ public class MenuController : MonoBehaviour
   {
     if (PauseMenu != null && Input.GetKeyDown(KeyCode.Escape))
     {
-      PauseMenu.SetActive(!PauseMenu.active);
+      PauseMenu.SetActive(!PauseMenu.activeInHierarchy);
+      PauseGame(PauseMenu.activeInHierarchy);
     }
   }
 }

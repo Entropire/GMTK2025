@@ -9,7 +9,10 @@ public class movement : MonoBehaviour
   [SerializeField] float JumpForce = 7f;
   [SerializeField] float SprintingJumpForce = 3f;
 
-  private Rigidbody2D rb;
+    private float idleBufferTime = 0.1f; 
+    private float idleBufferCounter = 0f;
+
+    private Rigidbody2D rb;
   private float input = 0f;
 
   void Start()
@@ -19,7 +22,7 @@ public class movement : MonoBehaviour
 
   void Update()
   {
-    input = Input.GetAxis("Horizontal");
+    input = (Input.GetKey(KeyCode.A) ? -1 : 0) + (Input.GetKey(KeyCode.D) ? 1 : 0);
 
     if (Input.GetKeyDown("space"))
     {
@@ -73,48 +76,53 @@ public class movement : MonoBehaviour
 
   private void HandleState()
   {
-    if (IsGrounded())
-    {
-      if (input != 0)
-      {
-        if (Input.GetKey(KeyCode.LeftControl))
+        if (IsGrounded())
         {
-          PlayerState.Instance.SetState(rb.velocity.x < 0 ? StatesEnum.RunningLeft : StatesEnum.RunningRight);
+            if (input != 0)
+            {
+                idleBufferCounter = 0f;
+                if (Input.GetKey(KeyCode.LeftControl))
+                {
+                    PlayerState.Instance.SetState(input < 0 ? StatesEnum.RunningLeft : StatesEnum.RunningRight);
+                }
+                else
+                {
+                    PlayerState.Instance.SetState(input < 0 ? StatesEnum.WalkingLeft : StatesEnum.WalkingRight);
+                }
+            }
+            else
+            {
+                idleBufferCounter += Time.fixedDeltaTime;
+                if (idleBufferCounter >= idleBufferTime)
+                {
+                    PlayerState.Instance.SetState(StatesEnum.Idle);
+                }
+            }
         }
         else
         {
-          PlayerState.Instance.SetState(rb.velocity.x < 0 ? StatesEnum.RunningLeft : StatesEnum.RunningRight);
+            if (rb.velocity.y > 0)
+            {
+                if (Input.GetKey(KeyCode.LeftControl))
+                {
+                    PlayerState.Instance.SetState(input < 0 ? StatesEnum.JumpingRunnuingLeft : StatesEnum.JumpingRunnuingRight);
+                }
+                else
+                {
+                    PlayerState.Instance.SetState(input < 0 ? StatesEnum.JumpingLeft : StatesEnum.JumpingRight);
+                }
+            }
+            else
+            {
+                if (Input.GetKey(KeyCode.LeftControl))
+                {
+                    PlayerState.Instance.SetState(input < 0 ? StatesEnum.FallingRunningLeft : StatesEnum.FallingRunnuingRight);
+                }
+                else
+                {
+                    PlayerState.Instance.SetState(input < 0 ? StatesEnum.FallingLeft : StatesEnum.FallingRight);
+                }
+            }
         }
-      }
-      else
-      {
-        PlayerState.Instance.SetState(StatesEnum.Idle);
-      }
     }
-    else
-    {
-      if (rb.velocity.y > 0)
-      {
-        if (Input.GetKey(KeyCode.LeftControl))
-        {
-          PlayerState.Instance.SetState(rb.velocity.x < 0 ? StatesEnum.JumpingRunnuingLeft : StatesEnum.JumpingRunnuingRight);
-        }
-        else
-        {
-          PlayerState.Instance.SetState(rb.velocity.x < 0 ? StatesEnum.JumpingLeft : StatesEnum.JumpingRight);
-        }
-      }
-      else
-      {
-        if (Input.GetKey(KeyCode.LeftControl))
-        {
-          PlayerState.Instance.SetState(rb.velocity.x < 0 ? StatesEnum.FallingRunningLeft : StatesEnum.FallingRunnuingRight);
-        }
-        else
-        {
-          PlayerState.Instance.SetState(rb.velocity.x < 0 ? StatesEnum.FallingLeft : StatesEnum.FallingRight);
-        }
-      }
-    }
-  }
 }
