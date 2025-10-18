@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
 namespace Assets.Scripts.Player
 {
   public class StateMachine : MonoBehaviour
   {
-    [SerializeField] public IState[] AllStates;
-    [SerializeField] private IState currentState;
+    [Header("Every entity registers it's states with it's own implementation of StateFetcher")]
+    public StateFetcher AllStates;
+    private IState currentState;
     private StateContext stateContext;
 #if UNITY_EDITOR
     private GameObject text;
@@ -17,7 +16,7 @@ namespace Assets.Scripts.Player
 
     public void InitStates()
     {
-
+      AllStates.GetStates(); //Make an instance of all states 
     }
 
     public void ChangeState(IState newState)
