@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -6,7 +7,8 @@ namespace Assets.Scripts.Player
 {
   public class StateMachine : MonoBehaviour
   {
-    [SerializeField] private AState currentState;
+    [SerializeField] public IState[] AllStates;
+    [SerializeField] private IState currentState;
     private StateContext stateContext;
 #if UNITY_EDITOR
     private GameObject text;
@@ -18,7 +20,7 @@ namespace Assets.Scripts.Player
 
     }
 
-    public void ChangeState(AState newState)
+    public void ChangeState(IState newState)
     {
       if (currentState != null)
       {
