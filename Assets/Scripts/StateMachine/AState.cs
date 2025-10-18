@@ -1,6 +1,6 @@
 ﻿namespace Assets.Scripts.Player
 {
-    internal abstract class AState
+    public abstract class AState
     {
         private StateData stateData;
 
