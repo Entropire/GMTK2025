@@ -47,11 +47,11 @@ namespace Assets.Scripts.Player
 #endif
         }
 
-        private void Update() => currentState?.Update(stateContext);
+        private void Update() => currentState?.Update();
 
         private void FixedUpdate()
         {
-            currentState?.FixedUpdate(stateContext);
+            currentState?.FixedUpdate();
 #if UNITY_EDITOR
             text.transform.position = transform.position + new Vector3(0, transform.localScale.y * 0.75f, 0);
             textComponent.text = currentState?.GetType().Name.Replace("State", "") ?? "No State";

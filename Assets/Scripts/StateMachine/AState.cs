@@ -9,9 +9,9 @@
             this.stateData = stateData;
         }
 
-        public virtual void Enter(StateContext stateContext) { }
-        public virtual void Exit(StateContext stateContext) { }
-        public virtual void Update(StateContext stateContext) { }
-        public virtual void FixedUpdate(StateContext stateContext) { }
+        public virtual void Enter() { }
+        public virtual void Exit() { }
+        public virtual void Update() { }
+        public virtual void FixedUpdate() { }
     }
 }
